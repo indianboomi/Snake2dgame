@@ -10,17 +10,29 @@ let food = {
 };
 
 let direction = "RIGHT";
+let newDirection = direction;
 
-document.addEventListener("keydown", changeDirection);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowLeft" && direction !== "RIGHT") newDirection = "LEFT";
+  else if (event.key === "ArrowUp" && direction !== "DOWN") newDirection = "UP";
+  else if (event.key === "ArrowRight" && direction !== "LEFT") newDirection = "RIGHT";
+  else if (event.key === "ArrowDown" && direction !== "UP") newDirection = "DOWN";
+});
 
-function changeDirection(event) {
-  if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-  else if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
-  else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
-  else if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+function setDirection(dir) {
+  if (
+    (dir === "LEFT" && direction !== "RIGHT") ||
+    (dir === "RIGHT" && direction !== "LEFT") ||
+    (dir === "UP" && direction !== "DOWN") ||
+    (dir === "DOWN" && direction !== "UP")
+  ) {
+    newDirection = dir;
+  }
 }
 
 function draw() {
+  direction = newDirection;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw snake
