@@ -1,7 +1,7 @@
 body {
   background: #111;
-  color: #fff;
-  font-family: Arial, sans-serif;
+  color: white;
+  font-family: sans-serif;
   text-align: center;
   margin-top: 40px;
 }
@@ -19,12 +19,12 @@ body {
   font-size: 30px;
   padding: 10px 20px;
   margin: 5px;
-  background-color: #333;
-  color: #fff;
+  background: #333;
+  color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .controls button:active {
-  background-color: #0f0;
+  background: #0f0;
 }
