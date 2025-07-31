@@ -10,3 +10,21 @@ body {
   border: 2px solid #0f0;
   background-color: #222;
 }
+
+.controls {
+  margin-top: 20px;
+}
+
+.controls button {
+  font-size: 30px;
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+}
+
+.controls button:active {
+  background-color: #0f0;
+}
