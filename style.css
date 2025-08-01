@@ -10,3 +10,22 @@ canvas {
   border: 2px solid #00FF00;
   background-color: black;
 }
+
+.controls {
+  margin-top: 20px;
+}
+
+.controls button {
+  font-size: 30px;
+  padding: 10px 20px;
+  margin: 5px;
+  background: #222;
+  color: #0f0;
+  border: none;
+  border-radius: 6px;
+}
+
+.controls button:active {
+  background: #0f0;
+  color: #000;
+}
