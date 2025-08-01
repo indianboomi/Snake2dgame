@@ -1,5 +1,5 @@
 body {
-  background: url("https://www.google.com/imgres?q=sand&imgurl=https%3A%2F%2F5.imimg.com%2Fdata5%2FSELLER%2FDefault%2F2024%2F6%2F428345354%2FKX%2FCV%2FEH%2F12083533%2Fsea-sand.jpg&imgrefurl=https%3A%2F%2Fwww.indiamart.com%2Fproddetail%2Fsea-sand-21361638233.html%3Fsrsltid%3DAfmBOoqb-E1XRh7Pk4LZNhTsiDTjBwQhgC0KaaPomkxsE-mqMDq4gdam&docid=_ABUt7KajMyX4M&tbnid=mR47Ubqq4bn4XM&vet=12ahUKEwisq5aSxeeOAxV0rlYBHflBJuAQM3oECDwQAA..i&w=2000&h=1702&hcb=2&ved=2ahUKEwisq5aSxeeOAxV0rlYBHflBJuAQM3oECDwQAA") no-repeat center center fixed;
+  background: url("https://i.imgur.com/Qm9rC2f.jpg") repeat;
   background-size: cover;
   color: white;
   font-family: sans-serif;
@@ -7,9 +7,10 @@ body {
   margin-top: 40px;
 }
 
+/* Optional: darken canvas for contrast */
 #game {
   border: 2px solid #0f0;
-  background-color: #222;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .controls {
