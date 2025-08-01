@@ -5,9 +5,13 @@ let score = 0;
 let level = 1;
 let speed = 150;
 
-let snake = [{ x: 200, y: 200 }];
-let food = randomFood();
+let snake = [
+  { x: 200, y: 200 },         // Head
+  { x: 180, y: 200 },         // Tail 1
+  { x: 160, y: 200 }          // Tail 2
+];
 
+let food = randomFood();
 let direction = "RIGHT";
 let game;
 
@@ -18,13 +22,11 @@ const backgrounds = {
   3: "https://i.imgur.com/WvQfZyp.jpg",      // Ice cave
 };
 
-// Load background
 function updateBackground() {
   document.body.style.backgroundImage = `url("${backgrounds[level] || backgrounds[3]}")`;
   document.getElementById("stage").innerText = level;
 }
 
-// Random food position
 function randomFood() {
   return {
     x: Math.floor(Math.random() * 20) * box,
@@ -32,7 +34,7 @@ function randomFood() {
   };
 }
 
-// Keyboard
+// Keyboard controls
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
   else if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
@@ -40,7 +42,7 @@ document.addEventListener("keydown", (e) => {
   else if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
 });
 
-// Touch buttons
+// Touch controls for Android
 ["up", "down", "left", "right"].forEach(dir => {
   document.getElementById(dir).addEventListener("click", () => {
     const map = { up: "UP", down: "DOWN", left: "LEFT", right: "RIGHT" };
@@ -62,34 +64,41 @@ function draw() {
   for (let i = 0; i < snake.length; i++) {
     const s = snake[i];
     if (i === 0) {
+      // Head
       ctx.fillStyle = "#4CAF50";
-      ctx.fillRect(s.x, s.y, box, box);
+      ctx.beginPath();
+      ctx.arc(s.x + box / 2, s.y + box / 2, box / 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eyes
       ctx.fillStyle = "#000";
       ctx.beginPath();
-      ctx.arc(s.x + 5, s.y + 5, 2, 0, 2 * Math.PI);
-      ctx.arc(s.x + 15, s.y + 5, 2, 0, 2 * Math.PI);
+      ctx.arc(s.x + 6, s.y + 6, 2, 0, 2 * Math.PI);
+      ctx.arc(s.x + 14, s.y + 6, 2, 0, 2 * Math.PI);
       ctx.fill();
     } else {
-      const grad = ctx.createLinearGradient(s.x, s.y, s.x + box, s.y + box);
-      grad.addColorStop(0, "#2e7d32");
-      grad.addColorStop(1, "#1b5e20");
-      ctx.fillStyle = grad;
-      ctx.fillRect(s.x, s.y, box, box);
+      // Rounded tail
+      ctx.fillStyle = "#2e7d32";
+      ctx.beginPath();
+      ctx.arc(s.x + box / 2, s.y + box / 2, box / 2.2, 0, Math.PI * 2);
+      ctx.fill();
     }
   }
 
-  // Food
-  ctx.fillStyle = "#f00";
-  ctx.fillRect(food.x, food.y, box, box);
+  // Draw blue food
+  ctx.fillStyle = "#00BFFF";
+  ctx.beginPath();
+  ctx.arc(food.x + box / 2, food.y + box / 2, box / 2.5, 0, 2 * Math.PI);
+  ctx.fill();
 
-  // Move
+  // Move snake
   let head = { ...snake[0] };
   if (direction === "LEFT") head.x -= box;
   if (direction === "RIGHT") head.x += box;
   if (direction === "UP") head.y -= box;
   if (direction === "DOWN") head.y += box;
 
-  // Collision
+  // Collision check
   if (
     head.x < 0 || head.x >= canvas.width ||
     head.y < 0 || head.y >= canvas.height ||
@@ -102,7 +111,7 @@ function draw() {
 
   snake.unshift(head);
 
-  // Eat
+  // Eat food
   if (head.x === food.x && head.y === food.y) {
     score++;
     document.getElementById("score").innerText = score;
