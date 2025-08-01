@@ -3,14 +3,17 @@ const ctx = canvas.getContext("2d");
 const box = 20;
 let score = 0;
 
+// Initial snake and food
 let snake = [{ x: 200, y: 200 }];
 let food = {
   x: Math.floor(Math.random() * 20) * box,
   y: Math.floor(Math.random() * 20) * box,
 };
 
+// Movement direction
 let direction = "RIGHT";
 
+// Keyboard controls
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
   else if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
@@ -18,7 +21,7 @@ document.addEventListener("keydown", function (e) {
   else if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
 });
 
-// ✅ Touch buttons
+// Touch controls for Android
 document.getElementById("up").addEventListener("click", () => {
   if (direction !== "DOWN") direction = "UP";
 });
@@ -33,19 +36,38 @@ document.getElementById("right").addEventListener("click", () => {
 });
 
 function draw() {
+  // Clear canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Snake
+  // Draw snake
   for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = i === 0 ? "#0f0" : "#0b0";
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    const s = snake[i];
+    if (i === 0) {
+      // Head
+      ctx.fillStyle = "#4CAF50";
+      ctx.fillRect(s.x, s.y, box, box);
+
+      // Eyes
+      ctx.fillStyle = "#000";
+      ctx.beginPath();
+      ctx.arc(s.x + 5, s.y + 5, 2, 0, 2 * Math.PI); // Left eye
+      ctx.arc(s.x + 15, s.y + 5, 2, 0, 2 * Math.PI); // Right eye
+      ctx.fill();
+    } else {
+      // Body with gradient
+      const grad = ctx.createLinearGradient(s.x, s.y, s.x + box, s.y + box);
+      grad.addColorStop(0, "#2e7d32");
+      grad.addColorStop(1, "#1b5e20");
+      ctx.fillStyle = grad;
+      ctx.fillRect(s.x, s.y, box, box);
+    }
   }
 
-  // Food
+  // Draw food
   ctx.fillStyle = "#f00";
   ctx.fillRect(food.x, food.y, box, box);
 
-  // Move
+  // Move snake
   let head = { ...snake[0] };
   if (direction === "LEFT") head.x -= box;
   if (direction === "RIGHT") head.x += box;
@@ -65,6 +87,7 @@ function draw() {
 
   snake.unshift(head);
 
+  // Check if snake eats food
   if (head.x === food.x && head.y === food.y) {
     score++;
     document.getElementById("score").innerText = score;
@@ -77,4 +100,5 @@ function draw() {
   }
 }
 
+// Start game
 const game = setInterval(draw, 150);
