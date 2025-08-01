@@ -3,18 +3,15 @@ const ctx = canvas.getContext("2d");
 const box = 20;
 let score = 0;
 
-// Snake starts with one block in the center
-let snake = [
-  { x: 200, y: 200 }
-];
-
-// First food position
+// Start with 1 block snake
+let snake = [{ x: 200, y: 200 }];
 let food = spawnFood();
-
-// Start direction
 let direction = "RIGHT";
 
-// Handle keyboard input
+// Beep sound (retro tone)
+const beep = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
+
+// Keyboard control
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
   else if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
@@ -22,7 +19,7 @@ document.addEventListener("keydown", (e) => {
   else if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
 });
 
-// Handle touch button input
+// Touch controls
 ["up", "down", "left", "right"].forEach((dir) => {
   document.getElementById(dir).addEventListener("click", () => {
     const map = { up: "UP", down: "DOWN", left: "LEFT", right: "RIGHT" };
@@ -39,7 +36,7 @@ document.addEventListener("keydown", (e) => {
   });
 });
 
-// Generate random food on grid
+// Create random food on grid
 function spawnFood() {
   return {
     x: Math.floor(Math.random() * (canvas.width / box)) * box,
@@ -53,27 +50,29 @@ function draw() {
 
   // Draw snake
   ctx.fillStyle = "#00FF00";
-  for (let i = 0; i < snake.length; i++) {
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+  for (let part of snake) {
+    ctx.fillRect(part.x, part.y, box, box);
   }
 
   // Draw food
   ctx.fillStyle = "#00BFFF";
   ctx.fillRect(food.x, food.y, box, box);
 
-  // Move the snake
+  // Move snake head
   let head = { ...snake[0] };
   if (direction === "LEFT") head.x -= box;
   if (direction === "RIGHT") head.x += box;
   if (direction === "UP") head.y -= box;
   if (direction === "DOWN") head.y += box;
 
-  // Check collision with wall or self
-  if (
-    head.x < 0 || head.x >= canvas.width ||
-    head.y < 0 || head.y >= canvas.height ||
-    snake.some((s, i) => i !== 0 && s.x === head.x && s.y === head.y)
-  ) {
+  // ✅ Wrap around screen (borderless mode)
+  if (head.x < 0) head.x = canvas.width - box;
+  if (head.x >= canvas.width) head.x = 0;
+  if (head.y < 0) head.y = canvas.height - box;
+  if (head.y >= canvas.height) head.y = 0;
+
+  // Self collision
+  if (snake.some((s, i) => i !== 0 && s.x === head.x && s.y === head.y)) {
     clearInterval(game);
     alert("💀 Game Over! Your Score: " + score);
     return;
@@ -81,15 +80,17 @@ function draw() {
 
   snake.unshift(head);
 
-  // Check if food is eaten
+  // Food eaten
   if (head.x === food.x && head.y === food.y) {
     score++;
     document.getElementById("score").innerText = score;
+    beep.currentTime = 0;
+    beep.play(); // 🔊 Retro beep
     food = spawnFood();
   } else {
     snake.pop();
   }
 }
 
-// Start game loop
+// Start game
 const game = setInterval(draw, 150);
