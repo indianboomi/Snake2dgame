@@ -1,32 +1,12 @@
 body {
-  background: url("https://i.imgur.com/Qm9rC2f.jpg") repeat;
-  background-size: cover;
-  color: white;
-  font-family: sans-serif;
+  background: black;
+  color: #00FF00;
+  font-family: monospace;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
-/* Optional: darken canvas for contrast */
-#game {
-  border: 2px solid #0f0;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.controls {
-  margin-top: 20px;
-}
-
-.controls button {
-  font-size: 30px;
-  padding: 10px 20px;
-  margin: 5px;
-  background: #333;
-  color: white;
-  border: none;
-  border-radius: 8px;
-}
-
-.controls button:active {
-  background: #0f0;
+canvas {
+  border: 2px solid #00FF00;
+  background-color: black;
 }
